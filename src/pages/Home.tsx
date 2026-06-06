@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import confetti from 'canvas-confetti';
 import { ChevronDown, Heart, Lock } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
@@ -12,8 +13,8 @@ const PASSCODE = '14-10-2024'; // DD-MM-YYYY
 // const EXPIRY_DATE = new Date('2026-06-07T00:01:00+05:30');
 
 // Test mode: June 6, 1:50 PM IST
-const UNLOCK_DATE = new Date('2026-06-06T14:47:00+05:30');
-const EXPIRY_DATE = new Date('2026-06-06T14:47:00+05:30');
+const UNLOCK_DATE = new Date('2026-06-06T14:48:00+05:30');
+const EXPIRY_DATE = new Date('2026-06-06T14:49:00+05:30');
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -444,11 +445,34 @@ function Gallery({ onComplete }: { onComplete: () => void }) {
 /* ------------------------------------------------------------------ */
 function FinalMessage({ onComplete }: { onComplete: () => void }) {
   const [showButton, setShowButton] = useState(false);
+  const [sealing, setSealing] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setShowButton(true), 4000);
     return () => clearTimeout(t);
   }, []);
+
+  const handleClose = () => {
+    setSealing(true);
+
+    const duration = 3000;
+    const end = Date.now() + duration;
+
+    const frame = () => {
+      confetti({
+        particleCount: 4, angle: 60, spread: 55, origin: { x: 0, y: 0.7 },
+        colors: ['#FFD700', '#FFA500', '#FF6B6B', '#FFFFFF', '#FF1493'],
+      });
+      confetti({
+        particleCount: 4, angle: 120, spread: 55, origin: { x: 1, y: 0.7 },
+        colors: ['#FFD700', '#FFA500', '#FF6B6B', '#FFFFFF', '#FF1493'],
+      });
+      if (Date.now() < end) requestAnimationFrame(frame);
+    };
+    frame();
+
+    setTimeout(onComplete, 3500);
+  };
 
   const lines = [
     'Nasa.',
@@ -491,16 +515,30 @@ function FinalMessage({ onComplete }: { onComplete: () => void }) {
         ))}
 
         <AnimatePresence>
-          {showButton && (
+          {showButton && !sealing && (
             <motion.button
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 1.5 }}
-              onClick={onComplete}
+              onClick={handleClose}
               className="mt-16 px-8 py-3 border border-neutral-700 rounded-full text-sm text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200 transition-all duration-500 cursor-pointer"
             >
               Close the vault
             </motion.button>
+          )}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {sealing && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1 }}
+              className="mt-16"
+            >
+              <p className="text-sm text-neutral-500 tracking-widest uppercase">Sealing the vault...</p>
+            </motion.div>
           )}
         </AnimatePresence>
       </motion.div>
