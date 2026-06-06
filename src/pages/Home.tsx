@@ -5,20 +5,20 @@ import { ChevronDown, Heart, Lock } from 'lucide-react';
 /* ------------------------------------------------------------------ */
 /*  CONFIG — CHANGE THESE                                              */
 /* ------------------------------------------------------------------ */
-const PASSCODE = '14-10-2024'; // DD-MM-YYYY
+const PASSCODE = '14-10-1997'; // DD-MM-YYYY
 
 // June 7, 2026 midnight IST — REAL DATE
 // const UNLOCK_DATE = new Date('2026-06-07T00:00:00+05:30');
 // const EXPIRY_DATE = new Date('2026-06-07T00:01:00+05:30');
 
 // Test mode: June 6, 1:50 PM IST
-const UNLOCK_DATE = new Date('2026-06-06T14:35:00+05:30');
-const EXPIRY_DATE = new Date('2026-06-06T14:36:00+05:30');
+const UNLOCK_DATE = new Date('2026-06-06T14:40:00+05:30');
+const EXPIRY_DATE = new Date('2026-06-06T14:41:00+05:30');
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
 /* ------------------------------------------------------------------ */
-type Section = 'opening' | 'passcode' | 'gallery' | 'expired';
+type Section = 'opening' | 'passcode' | 'gallery' | 'final' | 'ending' | 'expired';
 
 interface MemoryItem {
   photo: string;
@@ -76,7 +76,7 @@ function TypingText({ text, speed = 80, className = '', onComplete }: { text: st
 }
 
 /* ------------------------------------------------------------------ */
-/*  Opening Screen — Countdown or Expired                              */
+/*  Opening Screen                                                     */
 /* ------------------------------------------------------------------ */
 function OpeningScreen({ onUnlock }: { onUnlock: () => void }) {
   const [now, setNow] = useState(new Date());
@@ -129,7 +129,7 @@ function OpeningScreen({ onUnlock }: { onUnlock: () => void }) {
           animate={{ opacity: 1 }}
           transition={{ delay: 3, duration: 1.5 }}
         >
-          <p className="text-xs text-neutral-700 mb-6">June 6th, at 1:50 PM IST</p>
+          <p className="text-xs text-neutral-700 mb-6">June 7th, at 12:00 AM IST</p>
           <div className="flex gap-4 md:gap-8 justify-center font-mono text-3xl md:text-5xl text-neutral-400 tracking-widest">
             <div className="text-center">
               <div className="text-neutral-300">{String(days).padStart(2, '0')}</div>
@@ -171,7 +171,7 @@ function OpeningScreen({ onUnlock }: { onUnlock: () => void }) {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Passcode Gate with 60s Timer                                       */
+/*  Passcode Gate                                                      */
 /* ------------------------------------------------------------------ */
 function PasscodeGate({ onSuccess, onExpired }: { onSuccess: () => void; onExpired: () => void }) {
   const [input, setInput] = useState('');
@@ -351,7 +351,7 @@ const memories: MemoryItem[] = [
 /* ------------------------------------------------------------------ */
 /*  Gallery                                                            */
 /* ------------------------------------------------------------------ */
-function Gallery() {
+function Gallery({ onComplete }: { onComplete: () => void }) {
   const [index, setIndex] = useState(0);
   const [showCaption, setShowCaption] = useState(false);
 
@@ -365,7 +365,11 @@ function Gallery() {
   }, [index]);
 
   const handleNext = () => {
-    if (!isLast) setIndex(index + 1);
+    if (isLast) {
+      onComplete();
+    } else {
+      setIndex(index + 1);
+    }
   };
 
   return (
@@ -411,28 +415,117 @@ function Gallery() {
           )}
         </AnimatePresence>
 
-        {!isLast && (
-          <motion.button
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.5, duration: 1 }}
-            onClick={handleNext}
-            className="mt-12 px-8 py-3 border border-neutral-700 rounded-full text-sm text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200 transition-all duration-500 cursor-pointer"
-          >
-            Next
-          </motion.button>
-        )}
+        <motion.button
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 1 }}
+          onClick={handleNext}
+          className="mt-12 px-8 py-3 border border-neutral-700 rounded-full text-sm text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200 transition-all duration-500 cursor-pointer"
+        >
+          {isLast ? 'Continue' : 'Next'}
+        </motion.button>
+      </motion.div>
+    </motion.div>
+  );
+}
 
-        {isLast && (
+/* ------------------------------------------------------------------ */
+/*  Final Message — Happy Birthday                                     */
+/* ------------------------------------------------------------------ */
+function FinalMessage({ onComplete }: { onComplete: () => void }) {
+  const [showButton, setShowButton] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowButton(true), 4000);
+    return () => clearTimeout(t);
+  }, []);
+
+  const lines = [
+    'Nasa.',
+    'You are a lot of work.',
+    'But you are my work.',
+    'Happy Birthday, Bhaji.',
+  ];
+
+  return (
+    <motion.div
+      className="min-h-screen flex flex-col justify-center items-center px-6 py-20 relative"
+      variants={pageTransition}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,215,0,0.02)_0%,_transparent_60%)] pointer-events-none" />
+
+      <motion.div className="text-center max-w-lg" initial="hidden" animate="visible">
+        <motion.h2
+          className="text-5xl md:text-6xl font-handwriting text-neutral-300 mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.5 }}
+        >
+          <TypingText text="Okay, fine." speed={120} />
+        </motion.h2>
+
+        {lines.map((line, idx) => (
           <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1.5 }}
-            className="mt-12 text-sm text-neutral-600"
+            key={idx}
+            className={`text-lg md:text-xl text-neutral-300 leading-[2.5] ${idx === lines.length - 1 ? 'font-handwriting text-2xl md:text-3xl mt-6' : ''}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 2 + idx * 1.2, duration: 1.5 }}
           >
-            That is all.
+            {line}
+            {idx === lines.length - 1 && <Heart className="inline-block w-5 h-5 text-red-400 ml-2 fill-red-400/30" />}
           </motion.p>
-        )}
+        ))}
+
+        <AnimatePresence>
+          {showButton && (
+            <motion.button
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1.5 }}
+              onClick={onComplete}
+              className="mt-16 px-8 py-3 border border-neutral-700 rounded-full text-sm text-neutral-400 hover:bg-neutral-800 hover:text-neutral-200 transition-all duration-500 cursor-pointer"
+            >
+              Close the vault
+            </motion.button>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Ending                                                             */
+/* ------------------------------------------------------------------ */
+function Ending() {
+  return (
+    <motion.div
+      className="h-screen flex flex-col justify-center items-center px-6 relative"
+      variants={pageTransition}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,215,0,0.01)_0%,_transparent_60%)] pointer-events-none" />
+
+      <motion.div className="text-center max-w-sm" variants={staggerContainer} initial="hidden" animate="visible">
+        <motion.p className="text-xl text-neutral-400 mb-8" variants={fadeInUp}>
+          That is all.
+        </motion.p>
+
+        <motion.div className="space-y-4 text-sm text-neutral-700 leading-relaxed" variants={fadeInUp}>
+          <p>This was meant to happen only once.</p>
+          <p>And now it belongs only to memory.</p>
+          <p>Go bother someone else now.</p>
+        </motion.div>
+
+        <motion.div variants={fadeInUp} className="mt-16">
+          <Heart className="w-5 h-5 text-neutral-800 mx-auto fill-neutral-800/50" />
+        </motion.div>
       </motion.div>
     </motion.div>
   );
@@ -464,7 +557,11 @@ export default function Home() {
           />
         );
       case 'gallery':
-        return <Gallery />;
+        return <Gallery onComplete={() => setSection('final')} />;
+      case 'final':
+        return <FinalMessage onComplete={() => setSection('ending')} />;
+      case 'ending':
+        return <Ending />;
       case 'expired':
         return <ExpiredScreen />;
       default:
