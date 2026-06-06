@@ -12,8 +12,8 @@ const PASSCODE = '14-10-2024'; // DD-MM-YYYY
 // const EXPIRY_DATE = new Date('2026-06-07T00:01:00+05:30');
 
 // Test mode: June 6, 1:50 PM IST
-const UNLOCK_DATE = new Date('2026-06-06T14:16:00+05:30');
-const EXPIRY_DATE = new Date('2026-06-06T14:17:00+05:30');
+const UNLOCK_DATE = new Date('2026-06-06T14:20:00+05:30');
+const EXPIRY_DATE = new Date('2026-06-06T14:20:00+05:30');
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -336,16 +336,16 @@ function ExpiredScreen() {
 /*  Memory Data                                                        */
 /* ------------------------------------------------------------------ */
 const memories: MemoryItem[] = [
-  { photo: '/image1.jpg', caption: 'The first time I pointed a camera at you. You probably made that face.' },
-  { photo: '/image2.jpg', caption: 'My love. My bhaji. My permanent headache.' },
-  { photo: '/image3.jpg', caption: 'Same person. Different lighting. Still annoying.' },
-  { photo: '/image4.jpg', caption: 'That day you proved you were basically a large child I have to babysit.' },
-  { photo: '/image5.jpg', caption: 'Almost 2 years of you being around. Some days sunshine. Some days shadow. Mostly just... there.' },
-  { photo: '/image6.jpg', caption: "First time I bought you flowers. Didn't know you'd actually care. You kept them. Weirdo." },
-  { photo: '/image7.jpg', caption: '2026 has been rough. But that one New Year day was okay. Because you were there. I guess.' },
-  { photo: '/image8.jpg', caption: 'A bunch of random moments. Somehow they matter.' },
-  { photo: '/image9.jpg', caption: "One of those days with people I actually like. You're in it somehow." },
-  { photo: '/image10.jpg', caption: 'Saying bye to you is annoying. Stop leaving.' },
+  { photo: './image1.jpg', caption: 'The first time I pointed a camera at you. You probably made that face.' },
+  { photo: './image2.jpg', caption: 'My love. My bhaji. My permanent headache.' },
+  { photo: './image3.jpg', caption: 'Same person. Different lighting. Still annoying.' },
+  { photo: './image4.jpg', caption: 'That day you proved you were basically a large child I have to babysit.' },
+  { photo: './image5.jpg', caption: 'Almost 2 years of you being around. Some days sunshine. Some days shadow. Mostly just... there.' },
+  { photo: './image6.jpg', caption: "First time I bought you flowers. Didn't know you'd actually care. You kept them. Weirdo." },
+  { photo: './image7.jpg', caption: '2026 has been rough. But that one New Year day was okay. Because you were there. I guess.' },
+  { photo: './image8.jpg', caption: 'A bunch of random moments. Somehow they matter.' },
+  { photo: './image9.jpg', caption: "One of those days with people I actually like. You're in it somehow." },
+  { photo: './image10.jpg', caption: 'Saying bye to you is annoying. Stop leaving.' },
 ];
 
 /* ------------------------------------------------------------------ */
