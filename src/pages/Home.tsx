@@ -5,15 +5,15 @@ import { ChevronDown, Heart, Lock } from 'lucide-react';
 /* ------------------------------------------------------------------ */
 /*  CONFIG — CHANGE THESE                                              */
 /* ------------------------------------------------------------------ */
-const PASSCODE = '14-10-1997'; // DD-MM-YYYY
+const PASSCODE = '14-10-2024'; // DD-MM-YYYY
 
 // June 7, 2026 midnight IST — REAL DATE
 // const UNLOCK_DATE = new Date('2026-06-07T00:00:00+05:30');
 // const EXPIRY_DATE = new Date('2026-06-07T00:01:00+05:30');
 
 // Test mode: June 6, 1:50 PM IST
-const UNLOCK_DATE = new Date('2026-06-06T14:40:00+05:30');
-const EXPIRY_DATE = new Date('2026-06-06T14:41:00+05:30');
+const UNLOCK_DATE = new Date('2026-06-06T14:47:00+05:30');
+const EXPIRY_DATE = new Date('2026-06-06T14:47:00+05:30');
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -155,16 +155,26 @@ function OpeningScreen({ onUnlock }: { onUnlock: () => void }) {
       )}
 
       {isUnlocked && (
-        <motion.button
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          onClick={onUnlock}
-          className="mt-16 flex flex-col items-center gap-2 text-neutral-500 hover:text-neutral-300 transition-colors group cursor-pointer"
+          className="mt-16 text-center"
         >
-          <span className="text-sm tracking-widest uppercase">Enter</span>
-          <ChevronDown className="w-5 h-5 animate-bounce" />
-        </motion.button>
+          <p className="text-sm text-red-400 mb-4 font-medium tracking-wide">
+            The vault is open. You have one minute.
+          </p>
+          <p className="text-xs text-neutral-600 mb-8">
+            After that, it closes forever.
+          </p>
+          <button
+            onClick={onUnlock}
+            className="flex flex-col items-center gap-2 text-neutral-500 hover:text-neutral-300 transition-colors group cursor-pointer mx-auto"
+          >
+            <span className="text-sm tracking-widest uppercase">Enter</span>
+            <ChevronDown className="w-5 h-5 animate-bounce" />
+          </button>
+        </motion.div>
       )}
     </motion.div>
   );
