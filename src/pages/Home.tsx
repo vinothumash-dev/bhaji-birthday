@@ -12,8 +12,8 @@ const PASSCODE = '14-10-2024'; // DD-MM-YYYY
 // const EXPIRY_DATE = new Date('2026-06-07T00:01:00+05:30');
 
 // Test mode: June 6, 1:50 PM IST
-const UNLOCK_DATE = new Date('2026-06-06T14:25:00+05:30');
-const EXPIRY_DATE = new Date('2026-06-06T14:26:00+05:30');
+const UNLOCK_DATE = new Date('2026-06-06T14:30:00+05:30');
+const EXPIRY_DATE = new Date('2026-06-06T14:31:00+05:30');
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
