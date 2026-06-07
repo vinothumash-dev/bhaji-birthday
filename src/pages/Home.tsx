@@ -9,8 +9,8 @@ import { ChevronDown, Heart, Lock } from 'lucide-react';
 const PASSCODE = '14-10-2024'; // DD-MM-YYYY
 
 // June 7, 2026 midnight IST — REAL DATE
-const UNLOCK_DATE = new Date('2026-06-07T08:00:00+05:30');
-const EXPIRY_DATE = new Date('2026-06-07T08:01:00+05:30');
+const UNLOCK_DATE = new Date('2026-06-07T08:10:00+05:30');
+const EXPIRY_DATE = new Date('2026-06-07T08:11:00+05:30');
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
